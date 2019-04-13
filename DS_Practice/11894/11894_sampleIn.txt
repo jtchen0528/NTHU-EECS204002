@@ -1,0 +1,11 @@
+SantaList 3 Andy paper Sandy Candy David box
+AppendList 0
+AppendList 1 Ken Barbie
+AppendList 2 Barbie book Joe Barbie
+NaughtyKid 1 Andy
+AppendList 1 Kevin Barbie
+AppendList 1 Toby Barbie
+NaughtyKid 0
+NaughtyKid 1 Toby
+NaughtyKid 2 Andy Toby
+End
