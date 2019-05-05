@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vector>
+#include <queue>
 
 using namespace std;
 
@@ -18,6 +18,7 @@ char check[3][3] = {0};
 int move = 0;
 int win = 0;
 
+//pre-order
 void printnode(struct Node* ptr){
 	if(!ptr)return;
 	printnode(ptr->first);
@@ -28,6 +29,7 @@ void printnode(struct Node* ptr){
 	cout << ptr->mark << endl;
 }
 
+//post-order
 void printnode2(struct Node* ptr){
 	if(!ptr)return;
 	cout << "ID: " << ptr->ID << " ";
@@ -36,6 +38,23 @@ void printnode2(struct Node* ptr){
 	cout << "Mark: " << ptr->mark << endl;
 	printnode2(ptr->first);
 	printnode2(ptr->second);
+}
+
+// level-order traversal
+void traversal(Node* root)
+{
+    queue<Node*> q;
+    q.push(root);
+    while (!q.empty())
+    {
+        Node* p = q.front(); q.pop();
+		cout << "ID: " << p->ID << " ";
+		cout << "X:" << p->X << " ";
+		cout << "Y:" << p->Y << " " ;
+		cout << "Mark: " << p->mark << endl;
+        if (p->first)  q.push(p->first);
+        if (p->second) q.push(p->second);
+    }
 }
 
 void checkwin(struct Node* ptr){
@@ -239,6 +258,8 @@ int main(){
 		cout << "Tie" << endl;
 		printnode(head);
 	}
+
+//	traversal(head);
 /*
 	insert2(12, 1, 0, 'O', 8, 11);
 
