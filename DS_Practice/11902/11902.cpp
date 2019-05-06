@@ -62,16 +62,17 @@ bool checkpath(int X, int Y){
 }
 
 struct Node* lastptr = NULL;
+struct Node* last = NULL;
 
 void tree(int mat[100][100], int matrow, int matcol, int X, int Y, int dir){
 	struct Node* new_node = new Node;
 	new_node->data = mat[X][Y];
 	new_node->parent = lastptr;
-	if(dir==1){lastptr->left = new_node; lastptr = lastptr->left;}
-	else if(dir==2){lastptr->down = new_node; lastptr = lastptr->down;}
-	else if(dir==3){lastptr->right = new_node; lastptr = lastptr->right;}
-	else if(dir==4){lastptr->up = new_node; lastptr = lastptr->up;}
-	else{head = new_node; lastptr = head;}
+	if(dir==1){lastptr->left = new_node; last = lastptr; lastptr = lastptr->left;}
+	else if(dir==2){lastptr->down = new_node; last = lastptr; lastptr = lastptr->down;}
+	else if(dir==3){lastptr->right = new_node; last = lastptr; lastptr = lastptr->right;}
+	else if(dir==4){lastptr->up = new_node; last = lastptr; lastptr = lastptr->up;}
+	else{head = new_node; last = lastptr; lastptr = head;}
 	path[paths][0] = X;
 	path[paths][1] = Y;
 	path[paths][2] = new_node->data;
@@ -101,6 +102,7 @@ void tree(int mat[100][100], int matrow, int matcol, int X, int Y, int dir){
 			tree(mat, matrow, matcol, X-1, Y, 4);
 		}
 	}
+	lastptr = lastptr->parent;
 	paths--;
 	path[paths][0] = -1;
 	path[paths][0] = -1;
@@ -119,36 +121,50 @@ void killtree(struct Node *ptr){
 	killtree(ptr->up);
 }
 
-void preorder(struct Node *ptr){
+void preorder(struct Node *ptr, int f){
 	if(!ptr) return;
-	cout << ptr->data << " ";
-	preorder(ptr->left);
-	preorder(ptr->down);
-	preorder(ptr->right);
-	preorder(ptr->up);
+	if(!f){
+		cout << " " << ptr->data;
+	}else{
+		cout << ptr->data;
+	}
+	preorder(ptr->left, 0);
+	preorder(ptr->down, 0);
+	preorder(ptr->right, 0);
+	preorder(ptr->up, 0);
 }
 
-void postorder(struct Node *ptr){
+void postorder(Node *ptr, int f){
 	if(!ptr) return;
-	preorder(ptr->left);
-	preorder(ptr->down);
-	preorder(ptr->right);
-	preorder(ptr->up);
-	cout << ptr->data << " ";
+	postorder(ptr->left, 0);
+	postorder(ptr->down, 0);
+	postorder(ptr->right, 0);
+	postorder(ptr->up, 0);
+	if(!f){
+		cout << ptr->data << " ";
+	}else{
+		cout << ptr->data;
+	}
 }
 
-void levelorder(struct Node* ptr)
+void levelorder(struct Node* ptr, int f)
 {
     queue<Node*> q;
     q.push(ptr);
+    struct Node* p;
     while (!q.empty())
     {
-        struct Node* p = q.front(); q.pop();
-        cout << p->data << " ";    // 這行往下挪，結果仍相同。
+    	p = q.front(); q.pop();
+		if(!f){
+			cout << " " << p->data;
+		}else{
+			cout << p->data;
+		}
         if (p->left)  q.push(p->left);
         if (p->down)  q.push(p->down);
         if (p->right)  q.push(p->right);
         if (p->up) q.push(p->up);
+		f=0;
     }
 }
 
@@ -181,15 +197,17 @@ int main (){
 //		cout << method << endl << endl;
 
 		if(method == "Pre-order-traversal"){
-			preorder(head);
+			preorder(head, 1);
 			cout << endl;
 		}else if(method == "Post-order-traversal"){
-			postorder(head);	
+			postorder(head, 1);	
 			cout << endl;
 		}else{
-			levelorder(head);
+			levelorder(head, 1);
 			cout << endl;
 		}
+
+//		cout << head->down->data;
 
 		killtree(head);
 	
