@@ -178,6 +178,58 @@ void printpath(int *path, int dst, int bnum){
 	}
 }
 
+void BFS(edge **graph, int bnum){
+    queue<int> q;
+	bool visit[bnum];
+    for (int i=0; i<bnum; i++){
+        visit[i] = false;
+ 	}
+    for (int k=0; k<bnum; k++){
+        if (!visit[k]){
+            q.push(k);
+            visit[k] = true;
+            while (!q.empty()){
+                int i = q.front(); q.pop();
+				cout << i;
+ 
+                for (int j=0; j<bnum; j++){
+                    if (graph[i][j].lat!=INF && !visit[j]){
+                        q.push(j);
+                        visit[j] = true;
+                    }
+				}
+            }
+        }
+	}
+	cout << endl;
+}
+
+bool *visitDFS;	
+void DFS(edge **graph, int i, int bnum)
+{
+    if (visitDFS[i]) return;
+    visitDFS[i] = true;
+	cout << i;
+
+    for (int j=0; j<bnum; j++){
+        if (graph[i][j].lat != INF){
+            DFS(graph, j, bnum);
+		}
+	}	
+}
+
+void DFStraversal(edge **graph, int bnum)
+{
+	visitDFS = new bool[bnum];
+    for (int i=0; i<bnum; i++){
+        visitDFS[i] = false;
+	}
+    for (int i=0; i<bnum; i++){
+        DFS(graph, i, bnum);
+	}
+	cout << endl;
+}
+
 int main() {
 	int bnum, conn;
 	cin >> bnum >> conn;
@@ -210,12 +262,17 @@ int main() {
 	vector<int > dband;
 	dband = findmaxband(graph, dband, bnum);
 */
-	int *dlat2, *dband2, *dlatpath, *dbandpath;
+	int *dlat2, *dband2;
 	dlat2 = dijsktra_lat_path(graph2, 0, bnum, 0);
 	dband2 = dijsktra_band_path(graph2, 0, bnum, 0);
+
+	int *dlatpath, *dbandpath;
 	dlatpath = dijsktra_lat_path(graph2, 0, bnum, 1);
 	dbandpath = dijsktra_band_path(graph2, 0, bnum, 1);
-
+/*
+	BFS(graph2, bnum);
+	DFStraversal(graph2, bnum);
+*/	
 	for(int i=1; i<bnum; i++){
 		cout << i << " ";
 /*
@@ -231,6 +288,6 @@ int main() {
 		printpath(dbandpath, i, bnum);
 */		
 		cout << endl;
-	}
+	}	
 
 }
