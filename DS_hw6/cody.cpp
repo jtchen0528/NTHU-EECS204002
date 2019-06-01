@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <iostream>
 #include <memory>
 #include <queue>
@@ -38,13 +37,16 @@ int main() {
     char c;
     string s;
     cin >> n >> c >> s;
-
+/*
+    cout << n << " " << s << endl;
+*/
     auto cmp = [](node_ptr& a, node_ptr& b) -> bool {
         if (a->freq == b->freq) {
             return a->key > b->key;
         }
         return a->freq > b->freq;
     };
+
     priority_queue<node_ptr, vector<node_ptr>, decltype(cmp)> pq(cmp);
 
     vector<int> cnt(26), appear(26, -1);
@@ -53,7 +55,13 @@ int main() {
         cnt[c - 'a']++;
         if (appear[c - 'a'] == -1) appear[c - 'a'] = cur_key++;
     }
-
+/*
+    for(int i=0; i<26; i++){
+        if(appear[i]!=-1){
+            cout << cnt[i] << " " << appear[i] << endl;
+        } 
+    }
+*/
     for (int i = 0; i < 26; i++) {
         if (cnt[i] == 0) continue;
         pq.push(make_shared<Node>(cnt[i], 'a' + i, appear[i]));
