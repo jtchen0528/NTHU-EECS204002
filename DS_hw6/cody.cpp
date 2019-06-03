@@ -37,10 +37,8 @@ int main() {
     char c;
     string s;
     cin >> n >> c >> s;
-/*
-    cout << n << " " << s << endl;
-*/
-    auto cmp = [](node_ptr& a, node_ptr& b) -> bool {
+    
+	auto cmp = [](node_ptr& a, node_ptr& b) -> bool {
         if (a->freq == b->freq) {
             return a->key > b->key;
         }
@@ -55,14 +53,8 @@ int main() {
         cnt[c - 'a']++;
         if (appear[c - 'a'] == -1) appear[c - 'a'] = cur_key++;
     }
-/*
-    for(int i=0; i<26; i++){
-        if(appear[i]!=-1){
-            cout << cnt[i] << " " << appear[i] << endl;
-        } 
-    }
-*/
-    for (int i = 0; i < 26; i++) {
+    
+	for (int i = 0; i < 26; i++) {
         if (cnt[i] == 0) continue;
         pq.push(make_shared<Node>(cnt[i], 'a' + i, appear[i]));
     }
